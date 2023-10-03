@@ -1,17 +1,15 @@
-import requests
+from googleapiclient.discovery import build
+import os
 import json
-
-
 class Channel:
     def __init__(self, channel_id):
         self.channel_id = channel_id
 
-    def get_channel_info(self):
-        url = f"https://www.googleapis.com/youtube/v3/channels?id={self.channel_id}&part=snippet,contentDetails,statistics&key=AIzaSyBNsbt4e1yy1uVY1GMZoUi31VSE3sSs108"
-        response = requests.get(url)
-        json_data = json.loads(response.text)
-        return json.dumps(json_data, indent=2, ensure_ascii=False)
+    def get_service(self):
+        api_key: str = os.getenv('YT_API_KEY')
+        youtube = build('youtube', 'v3', developerKey=api_key)
+        return youtube
 
     def print_info(self):
-        channel_info = self.get_channel_info()
-        return channel_info
+        dict_to_print = self.get_service().channels().list(id=self.channel_id, part='snippet, statistics').execute()
+        return json.dumps(dict_to_print, indent=2, ensure_ascii=False)
