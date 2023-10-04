@@ -16,6 +16,83 @@ class Channel:
         self.video_count = int(self.json_item['statistics']['videoCount'])
         self.view_count = int(self.json_item['statistics']['viewCount'])
 
+    def __str__(self):
+        return f"'{self.title} ({self.url})'"
+
+    def __add__(self, other):
+        if isinstance(other, Channel):
+            return self.subscribers_count + other.subscribers_count
+        if isinstance(other, (int, float)):
+            return self.subscribers_count + other
+        raise NotImplemented
+
+    def __radd__(self, other):
+        return self + other
+
+    def __sub__(self, other):
+        if isinstance(other, Channel):
+            return self.subscribers_count - other.subscribers_count
+        if isinstance(other, (int, float)):
+            return self.subscribers_count - other
+        raise NotImplemented
+
+    def __rsub__(self, other):
+        return self - other
+
+    def __mul__(self, other):
+        if isinstance(other, Channel):
+            return self.subscribers_count * other.subscribers_count
+        if isinstance(other, (int, float)):
+            return self.subscribers_count * other
+        raise NotImplemented
+
+    def __rmul__(self, other):
+        return self * other
+
+    def __truediv__(self, other):
+        if isinstance(other, Channel):
+            return self.subscribers_count / other.subscribers_count
+        if isinstance(other, (int, float)):
+            return self.subscribers_count / other
+        raise NotImplemented
+
+    def __rtruediv__(self, other):
+        return self / other
+
+    def __gt__(self, other):
+        if isinstance(other, Channel):
+                return self.subscribers_count > other.subscribers_count
+        if isinstance(other, (int, float)):
+            return self.subscribers_count > other
+        raise NotImplemented
+
+    def __ge__(self, other):
+        if isinstance(other, Channel):
+                return self.subscribers_count >= other.subscribers_count
+        if isinstance(other, (int, float)):
+            return self.subscribers_count >= other
+        raise NotImplemented
+
+    def __lt__(self, other):
+        if isinstance(other, Channel):
+                return self.subscribers_count < other.subscribers_count
+        if isinstance(other, (int, float)):
+            return self.subscribers_count < other
+        raise NotImplemented
+
+    def __le__(self, other):
+        if isinstance(other, Channel):
+                return self.subscribers_count <= other.subscribers_count
+        if isinstance(other, (int, float)):
+            return self.subscribers_count <= other
+        raise NotImplemented
+
+    def __eq__(self, other):
+        if isinstance(other, Channel):
+                return self.subscribers_count == other.subscribers_count
+        if isinstance(other, (int, float)):
+            return self.subscribers_count == other
+        raise NotImplemented
     def print_info(self):
         dict_to_print = self.get_service().channels().list(id=self.channel_id, part='snippet, statistics').execute()
         return json.dumps(dict_to_print, indent=2, ensure_ascii=False)
@@ -40,6 +117,3 @@ class Channel:
         }
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(dictionary, f, indent=2, ensure_ascii=False)
-
-
-
