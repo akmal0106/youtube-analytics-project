@@ -1,6 +1,4 @@
 from src.APIMixin import APIMixin
-from googleapiclient.discovery import build
-import os
 import json
 class Channel(APIMixin):
     def __init__(self, channel_id: str) -> None:

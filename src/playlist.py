@@ -1,7 +1,4 @@
 from src.APIMixin import APIMixin
-from googleapiclient.discovery import build
-import os
-import json
 from datetime import timedelta
 import isodate
 
