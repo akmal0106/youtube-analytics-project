@@ -1,10 +1,9 @@
+from src.APIMixin import APIMixin
 from googleapiclient.discovery import build
 import os
 import json
 
-class Video:
-    YT_API_KEY = os.getenv('YT_API_KEY')
-    youtube = build('youtube', 'v3', developerKey=YT_API_KEY)
+class Video(APIMixin):
     def __init__(self, video_id: str):
         self.video_id = video_id
         self.json_: dict = self.convert_youtube_json()
@@ -17,12 +16,8 @@ class Video:
     def __str__(self):
         return self.title
 
-    @classmethod
-    def get_service(cls):
-        return cls.youtube
-
     def print_info(self):
-        video_response = self.youtube.videos().list(part='snippet, statistics, contentDetails, topicDetails', id=self.video_id).execute()
+        video_response = self.get_service().videos().list(part='snippet, statistics, contentDetails, topicDetails', id=self.video_id).execute()
         return json.dumps(video_response, indent=2, ensure_ascii=False)
 
     def convert_youtube_json(self):
